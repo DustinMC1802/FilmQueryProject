@@ -21,11 +21,16 @@ public class FilmQueryApp {
   private void test() {
     Film film = db.findFilmById(1);
     System.out.println(film);
-    Actor actor = db.findActorById(1);
-    System.out.println(actor);
-    List<Actor> actors = db.findActorsByFilmId(1);
-    for (Actor actor2 : actors) {
-    	System.out.println(actor2);
+//    Actor actor = db.findActorById(1);
+//    System.out.println(actor);
+//    List<Actor> actors = db.findActorsByFilmId(1);
+//    for (Actor actor2 : actors) {
+//    	System.out.println(actor2);
+//	}
+//    System.out.println(film.getCast());
+    for (Actor a : film.getCast()) {
+    	System.out.println(a.getFirstName() + " " + a.getLastName());
+		
 	}
   }
 

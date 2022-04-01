@@ -1,9 +1,11 @@
 package com.skilldistillery.filmquery.entities;
 
+import java.util.List;
 import java.util.Objects;
 
 public class Film {
 
+	// fields
 	private int id;
 	private String title;
 	private String description;
@@ -15,6 +17,7 @@ public class Film {
 	private double replacementCost;
 	private String rating;
 	private String specialFeatures;
+	private List<Actor> cast;
 
 	// constructors
 	public Film() {
@@ -35,6 +38,7 @@ public class Film {
 		this.replacementCost = replacement_cost;
 		this.rating = rating;
 		this.specialFeatures = specialFeatures;
+		
 	}
 
 	// getters and setters
@@ -124,6 +128,14 @@ public class Film {
 
 	public void setSpecialFeatures(String specialFeatures) {
 		this.specialFeatures = specialFeatures;
+	}
+
+	public List<Actor> getCast() {
+		return cast;
+	}
+
+	public void setCast(List<Actor> cast) {
+		this.cast = cast;
 	}
 
 	// toString
