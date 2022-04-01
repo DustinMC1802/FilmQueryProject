@@ -74,6 +74,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 			PreparedStatement ps = conn.prepareStatement(sqltxt);
 			ps.setInt(1, actorId);
 			ResultSet rs = ps.executeQuery();
+			actor = new Actor();
 			if (rs.next()) {
 				actor.setId(rs.getInt("id"));
 				actor.setFirstName(rs.getString("first_name"));
@@ -97,17 +98,21 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		// TODO Actor query for film ID
 		try {
 			Connection conn = DriverManager.getConnection(URL, user, pass);
-			String sqltxt = "SELECT a.* FROM actor a "
-									+ "JOIN film_actor fa ON a.id = fa.actor_id "
-									+ "JOIN film f ON fa.film_id = f.id "
-									+ "WHERE id = ?";
+			String sqltxt = "SELECT a.* FROM actor a"
+									+ " JOIN film_actor fa ON a.id = fa.actor_id"
+									+ " WHERE fa.film_id = ?";
+//			debug sysout
+//			System.out.println(sqltxt);
 
 			PreparedStatement ps = conn.prepareStatement(sqltxt);
 			ps.setInt(1, filmId);
 			ResultSet rs = ps.executeQuery();
-			if (rs.next()) {
-			
-
+			while (rs.next()) {
+				Actor actor = new Actor();
+				actor.setId(rs.getInt("id"));
+				actor.setFirstName(rs.getString("first_name"));
+				actor.setLastName(rs.getString("last_name"));
+				actors.add(actor);
 			}
 			rs.close();
 			ps.close();
