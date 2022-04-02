@@ -51,6 +51,7 @@ public class FilmQueryApp {
 			try {
 
 				if (userInput == 1) {
+					filmIDSearch(input);
 					startupMenu();
 					userInput = input.nextInt();
 
@@ -68,7 +69,6 @@ public class FilmQueryApp {
 				System.out.println("Invalid selection");
 				startupMenu();
 				userInput = input.nextInt();
-//			input.nextLine();
 			}
 		}
 	}
@@ -79,6 +79,24 @@ public class FilmQueryApp {
 		System.out.println("Press 1 to look up a film by its ID");
 		System.out.println("Press 2 to look up a film with a keyword search");
 		System.out.println("Press 3 to exit");
+	}
+	
+	private void filmIDSearch(Scanner input) {
+		int userInput = 0;
+		System.out.println("Please enter film ID: ");
+		userInput = input.nextInt();
+		if (userInput >= 1 && userInput <= 1000) {
+			System.out.println("------------------------------------");
+		    Film film = db.findFilmById(userInput);
+		    System.out.println(film.getTitle());
+		    System.out.println(film.getReleaseYear());
+		    System.out.println(film.getRating());
+		    System.out.println(film.getDescription());
+		    System.out.println("------------------------------------");
+		} else {
+			System.out.println("Film not found");
+		}
+		
 	}
 
 }
