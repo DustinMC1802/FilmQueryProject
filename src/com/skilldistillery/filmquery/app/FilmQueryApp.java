@@ -7,6 +7,7 @@ import com.skilldistillery.filmquery.database.DatabaseAccessor;
 import com.skilldistillery.filmquery.database.DatabaseAccessorObject;
 import com.skilldistillery.filmquery.entities.Actor;
 import com.skilldistillery.filmquery.entities.Film;
+import com.skilldistillery.filmquery.entities.Language;
 
 public class FilmQueryApp {
 
@@ -108,6 +109,7 @@ public class FilmQueryApp {
 					System.out.println(film.getRating());
 					System.out.println(film.getDescription());
 					displayLanguage(film);
+					displayCast(film);
 					System.out.println("--------");
 				}
 			} 
@@ -122,8 +124,9 @@ public class FilmQueryApp {
 	}
 
 	private void displayLanguage(Film film) {
-		
-		System.out.println("In language: ");	
+		int filmId = film.getLanguageID();
+		Language language = db.findLanguageByFilmId(filmId);
+		System.out.println("In language: " + language.getName());	
 	}
 	
 	private void displayCast(Film film) {

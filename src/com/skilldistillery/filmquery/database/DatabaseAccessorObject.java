@@ -10,6 +10,7 @@ import java.util.List;
 
 import com.skilldistillery.filmquery.entities.Actor;
 import com.skilldistillery.filmquery.entities.Film;
+import com.skilldistillery.filmquery.entities.Language;
 
 public class DatabaseAccessorObject implements DatabaseAccessor {
 	private static final String URL = "jdbc:mysql://localhost:3306/sdvid?useSSL=false&useLegacyDatetimeCode=false&serverTimezone=US/Mountain";
@@ -163,6 +164,34 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		// Instantiate new Actor for each rs row
 		// add to actors List
 		return actors;
+	}
+	@Override
+	public Language findLanguageByFilmId(int filmId) {
+		Language language = null;
+		try {
+			Connection conn = DriverManager.getConnection(URL, user, pass);
+			String sqltxt = "SELECT l.* FROM language l"
+					+ " JOIN film f ON l.id = f.language_id"
+					+ " WHERE f.id = ?";
+//			debug sysout
+//			System.out.println(sqltxt);
+			PreparedStatement ps = conn.prepareStatement(sqltxt);
+			ps.setInt(1, filmId);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				language = new Language();
+				language.setId(rs.getInt("id"));
+				language.setName(rs.getString("name"));
+			}
+			rs.close();
+			ps.close();
+			conn.close();
+		}
+		
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return language;
 	}
 
 }
