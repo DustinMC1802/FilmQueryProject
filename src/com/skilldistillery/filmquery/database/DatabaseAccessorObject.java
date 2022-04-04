@@ -64,6 +64,47 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		}
 		return film;
 	}
+	
+	@Override
+	public List<Film> findFilmByKeyword(String filmKeyword) {
+		List<Film> films = new ArrayList<>();
+		try {
+			Connection conn = DriverManager.getConnection(URL, user, pass);
+			String sqltxt = "SELECT * FROM film WHERE title LIKE ? OR description LIKE ?";
+//			String sqltxt = "SELECT * FROM film WHERE title LIKE ?";
+			
+			PreparedStatement ps = conn.prepareStatement(sqltxt);
+			ps.setString(1, "%" + filmKeyword + "%");
+			ps.setString(2, "%" + filmKeyword + "%");
+//			ps.setString(2, filmKeyword);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				Film film = new Film();
+				film.setId(rs.getInt("id"));
+				film.setTitle(rs.getString("title"));
+				film.setDescription(rs.getString("description"));
+				film.setReleaseYear(rs.getInt("release_year"));
+				film.setLanguageID(rs.getInt("language_id"));
+				film.setRentalDuration(rs.getInt("rental_duration"));
+				film.setRentalRate(rs.getDouble("rental_rate"));
+				film.setLength(rs.getInt("length"));
+				film.setReplacementCost(rs.getDouble("replacement_cost"));
+				film.setRating(rs.getString("rating"));
+				film.setSpecialFeatures(rs.getString("special_features"));
+				films.add(film);
+				
+			}
+			rs.close();
+			ps.close();
+			conn.close();
+		}
+		
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return films;
+	}
+
 
 	@Override
 	public Actor findActorById(int actorId) {
@@ -92,7 +133,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		}
 		return actor;
 	}
-
+	
 	@Override
 	public List<Actor> findActorsByFilmId(int filmId) {
 		List<Actor> actors = new ArrayList<>();
