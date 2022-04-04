@@ -126,7 +126,7 @@ public class FilmQueryApp {
 	private void displayLanguage(Film film) {
 		int filmId = film.getLanguageID();
 		Language language = db.findLanguageByFilmId(filmId);
-		System.out.println("In language: " + language.getName());	
+		System.out.println("In language: " + language.getName() + " " + language.getId());	
 	}
 	
 	private void displayCast(Film film) {

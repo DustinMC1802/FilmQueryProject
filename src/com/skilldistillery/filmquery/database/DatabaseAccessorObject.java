@@ -172,7 +172,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 			Connection conn = DriverManager.getConnection(URL, user, pass);
 			String sqltxt = "SELECT l.* FROM language l"
 					+ " JOIN film f ON l.id = f.language_id"
-					+ " WHERE f.id = ?";
+					+ " WHERE l.id = ?";
 //			debug sysout
 //			System.out.println(sqltxt);
 			PreparedStatement ps = conn.prepareStatement(sqltxt);
