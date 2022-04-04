@@ -99,26 +99,30 @@ public class FilmQueryApp {
 		userInput = input.next();
 		films = db.findFilmByKeyword(userInput);
 //		if (films.get(0).getId() > 0 && films.get(0).getId() <= 1000) {
-		if (films.get(0).getId() >= 1 && films.get(0).getId() <= 1000) {
-			for (Film film : films) {
-				System.out.println("--------");
-				System.out.println(film.getTitle());
-				System.out.println(film.getReleaseYear());
-				System.out.println(film.getRating());
-				System.out.println(film.getDescription());
-				displayLanguage(film);
-				System.out.println("--------");
-			}
-		} else {
+		try {
+			if (films.get(0).getId() >= 1 && films.get(0).getId() <= 1000) {
+				for (Film film : films) {
+					System.out.println("--------");
+					System.out.println(film.getTitle());
+					System.out.println(film.getReleaseYear());
+					System.out.println(film.getRating());
+					System.out.println(film.getDescription());
+					displayLanguage(film);
+					System.out.println("--------");
+				}
+			} 
+		} catch (Exception e) {
 			System.out.println("--------");
-			System.out.println("No films with that keyword found");
+			System.out.println("No films found with keyword: " + userInput);
 			System.out.println("--------");
+//			e.printStackTrace();
 		}
 		System.out.println("------------------------------------");
 
 	}
 
 	private void displayLanguage(Film film) {
+		
 		System.out.println("In language: ");	
 	}
 	
