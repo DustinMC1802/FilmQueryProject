@@ -43,7 +43,7 @@ public class FilmQueryApp {
 		int userInput = 0;
 
 		startupMenu();
-		userInput = Integer.parseInt(input.nextLine());
+		userInput = input.nextInt();
 		while (userInput != 3) {
 
 			if (userInput == 1) {
@@ -64,6 +64,7 @@ public class FilmQueryApp {
 		}
 		System.out.println("Goodbye");
 	}
+	
 
 	private void startupMenu() {
 		System.out.println("Please select from the following options:");
@@ -93,34 +94,34 @@ public class FilmQueryApp {
 	}
 
 	private void filmKeywordSearch(Scanner input) {
-		String userInput = "";
-		List<Film> films = db.findFilmByKeyword(userInput);
+		int userInput = 0;
 		System.out.println("Please enter a film keyword: ");
 		System.out.println("------------------------------------");
-		userInput = input.next();
-		films = db.findFilmByKeyword(userInput);
-//		if (films.get(0).getId() > 0 && films.get(0).getId() <= 1000) {
+		String filmKeyword = input.next();
+		List<Film> films = db.findFilmByKeyword(filmKeyword);
 		try {
-			if (films.get(0).getId() >= 1 && films.get(0).getId() <= 1000) {
+			if (! films.isEmpty()) {
 				for (Film film : films) {
 					System.out.println("--------");
 					System.out.println(film.getTitle());
 					System.out.println(film.getReleaseYear());
 					System.out.println(film.getRating());
 					System.out.println(film.getDescription());
+					System.out.println("Film ID: " + film.getId());
 					displayLanguage(film);
-					displayCast(film);
+//					displayCast(film);
 					System.out.println("--------");
 				}
-			} 
+			} else {
+				System.out.println("--------");
+				System.out.println("No films found with keyword: " + filmKeyword);
+				System.out.println("--------");
+				
+			}
 		} catch (Exception e) {
-			System.out.println("--------");
-			System.out.println("No films found with keyword: " + userInput);
-			System.out.println("--------");
 //			e.printStackTrace();
 		}
 		System.out.println("------------------------------------");
-
 	}
 
 	private void displayLanguage(Film film) {
