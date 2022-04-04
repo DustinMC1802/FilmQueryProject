@@ -1,6 +1,5 @@
 package com.skilldistillery.filmquery.app;
 
-import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -13,7 +12,7 @@ public class FilmQueryApp {
 
 	DatabaseAccessor db = new DatabaseAccessorObject();
 
-	public static void main(String[] args) throws InputMismatchException {
+	public static void main(String[] args) {
 		FilmQueryApp app = new FilmQueryApp();
 //    app.test();
 		app.launch();
@@ -29,12 +28,9 @@ public class FilmQueryApp {
 ////    	System.out.println(actor2);
 ////	}
 ////    System.out.println(film.getCast());
-//    for (Actor a : film.getCast()) {
-//    	System.out.println(a.getFirstName() + " " + a.getLastName());
-//	}
 //  }
 
-	private void launch() throws InputMismatchException {
+	private void launch() {
 		Scanner input = new Scanner(System.in);
 
 		startUserInterface(input);
@@ -42,36 +38,30 @@ public class FilmQueryApp {
 		input.close();
 	}
 
-	private void startUserInterface(Scanner input) throws InputMismatchException {
+	private void startUserInterface(Scanner input) {
 		int userInput = 0;
 
 		startupMenu();
 		userInput = Integer.parseInt(input.nextLine());
 		while (userInput != 3) {
-			try {
 
-				if (userInput == 1) {
-					filmIDSearch(input);
-					startupMenu();
-					userInput = input.nextInt();
+			if (userInput == 1) {
+				filmIDSearch(input);
+				startupMenu();
+				userInput = input.nextInt();
 
-				} else if (userInput == 2) {
-					filmKeywordSearch(input);
-					startupMenu();
-					userInput = input.nextInt();
+			} else if (userInput == 2) {
+				filmKeywordSearch(input);
+				startupMenu();
+				userInput = input.nextInt();
 
-				} else {
-					System.out.println("Invalid selection");
-					startupMenu();
-					userInput = input.nextInt();
-				}
-
-			} catch (InputMismatchException e) {
+			} else if (userInput < 1 && userInput > 3) {
 				System.out.println("Invalid selection");
 				startupMenu();
 				userInput = input.nextInt();
 			}
 		}
+		System.out.println("Goodbye");
 	}
 
 	private void startupMenu() {
@@ -93,32 +83,50 @@ public class FilmQueryApp {
 			System.out.println(film.getReleaseYear());
 			System.out.println(film.getRating());
 			System.out.println(film.getDescription());
+			displayLanguage(film);
+			displayCast(film);
 		} else {
 			System.out.println("Film not found");
 		}
 		System.out.println("------------------------------------");
 	}
-	
+
 	private void filmKeywordSearch(Scanner input) {
-		String userInput;
+		String userInput = "";
+		List<Film> films = db.findFilmByKeyword(userInput);
 		System.out.println("Please enter a film keyword: ");
 		System.out.println("------------------------------------");
-		userInput = input.nextLine();
-		List<Film> films = db.findFilmByKeyword(userInput);
-		for (Film film : films) {
+		userInput = input.next();
+		films = db.findFilmByKeyword(userInput);
+//		if (films.get(0).getId() > 0 && films.get(0).getId() <= 1000) {
+		if (films.get(0).getId() >= 1 && films.get(0).getId() <= 1000) {
+			for (Film film : films) {
+				System.out.println("--------");
+				System.out.println(film.getTitle());
+				System.out.println(film.getReleaseYear());
+				System.out.println(film.getRating());
+				System.out.println(film.getDescription());
+				displayLanguage(film);
+				System.out.println("--------");
+			}
+		} else {
 			System.out.println("--------");
-			System.out.println(film.getTitle());
-			System.out.println(film.getReleaseYear());
-			System.out.println(film.getRating());
-			System.out.println(film.getDescription());
+			System.out.println("No films with that keyword found");
 			System.out.println("--------");
 		}
-		
 		System.out.println("------------------------------------");
-////    List<Actor> actors = db.findActorsByFilmId(1);
-////    for (Actor actor2 : actors) {
-////    	System.out.println(actor2);
-		
+
 	}
 
+	private void displayLanguage(Film film) {
+		System.out.println("In language: ");	
+	}
+	
+	private void displayCast(Film film) {
+		System.out.println("Cast:");
+		for (Actor a : film.getCast()) {
+			System.out.println(a.getFirstName() + " " + a.getLastName());
+		}
+		
+	}
 }

@@ -71,12 +71,10 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		try {
 			Connection conn = DriverManager.getConnection(URL, user, pass);
 			String sqltxt = "SELECT * FROM film WHERE title LIKE ? OR description LIKE ?";
-//			String sqltxt = "SELECT * FROM film WHERE title LIKE ?";
 			
 			PreparedStatement ps = conn.prepareStatement(sqltxt);
 			ps.setString(1, "%" + filmKeyword + "%");
 			ps.setString(2, "%" + filmKeyword + "%");
-//			ps.setString(2, filmKeyword);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
 				Film film = new Film();
